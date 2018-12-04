@@ -15,6 +15,8 @@ public class SanPham {
     private String tongDanhGia;
     private String ab;
     private String hungdao;
+    private String long90;
+
     @Override
     public String toString() {
         return "SanPham{" +
