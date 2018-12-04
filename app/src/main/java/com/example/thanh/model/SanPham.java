@@ -13,8 +13,7 @@ public class SanPham {
     private String ngayCapNhat;
     private int slBanRa;
     private String tongDanhGia;
-    private String a;
-
+    
     @Override
     public String toString() {
         return "SanPham{" +
