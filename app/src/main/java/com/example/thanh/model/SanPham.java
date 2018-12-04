@@ -13,9 +13,7 @@ public class SanPham {
     private String ngayCapNhat;
     private int slBanRa;
     private String tongDanhGia;
-    private String ab;
-    private String hungdao;
-    private String long90;
+
 
     @Override
     public String toString() {
