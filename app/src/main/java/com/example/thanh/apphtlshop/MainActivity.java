@@ -25,5 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private void addControls() {
         lvSanPham = findViewById(R.id.lvSanPham);
         listSanPham = new ArrayList<>();
+        arrSanPham = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listSanPham);
+        lvSanPham.setAdapter(arrSanPham);
     }
 }
