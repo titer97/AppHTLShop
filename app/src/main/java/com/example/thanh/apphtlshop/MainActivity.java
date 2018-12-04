@@ -19,12 +19,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         addControls();
     }
 
     private void addControls() {
         lvSanPham = findViewById(R.id.lvSanPham);
-
+        listSanPham = new ArrayList<>();
     }
 }
