@@ -79,11 +79,19 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray jsonArray = new JSONArray(builder.toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    int masp = jsonObject.getInt("masp");
-                    String tensp = jsonObject.getString("tensp");
                     SanPham sp = new SanPham();
-                    sp.setTenSp(tensp);
-                    sp.setMaSp(masp);
+                    sp.setTenSp(jsonObject.getString("tensp"));
+                    sp.setMaSp(jsonObject.getInt("masp"));
+                    sp.setAnhBia(jsonObject.getString("anhbia"));
+                    sp.setBaoHanh(jsonObject.getString("baohanh"));
+                    sp.setGiaBan(jsonObject.getString("giaban"));
+                    sp.setMaLoai(jsonObject.getInt("maloai"));
+                    sp.setMaNcc(jsonObject.getInt("mancc"));
+                    sp.setTongDanhGia(jsonObject.getString("TongDanhGia"));
+                    sp.setNgayCapNhat(jsonObject.getString("ngaycapnhat"));
+                    sp.setSoLuongTon(jsonObject.getInt("slbanra"));
+                    sp.setMoTa(jsonObject.getString("mota"));
+                    sp.setSlBanRa(jsonObject.getInt("slbanra"));
                     dsSanPham.add(sp);
                 }
                 br.close();
