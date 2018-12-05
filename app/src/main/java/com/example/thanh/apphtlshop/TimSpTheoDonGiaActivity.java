@@ -1,14 +1,12 @@
 package com.example.thanh.apphtlshop;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.sax.StartElementListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.thanh.model.SanPham;
@@ -22,41 +20,63 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-
-    ListView lvDanhSachSanPham;
+public class TimSpTheoDonGiaActivity extends AppCompatActivity {
+    EditText edtDonGiaMin,edtDonGiaMax;
+    Button btnXemSpTheoDonGia;
+    ListView lvSanPham3;
     ArrayAdapter<SanPham> sanPhamArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tim_sp_theo_don_gia);
         addControls();
         addEvents();
     }
 
-    private void addControls() {
-        lvDanhSachSanPham = findViewById(R.id.lvSanPham);
-        sanPhamArrayAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1);
-        lvDanhSachSanPham.setAdapter(sanPhamArrayAdapter);
-        DanhSachSanPhamTask danhSachSanPhamTask = new DanhSachSanPhamTask();
-        danhSachSanPhamTask.execute();
-    }
-
     private void addEvents() {
+        btnXemSpTheoDonGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xuLyXemSpTheoDonGia();
 
+            }
+        });
 
     }
 
-    class DanhSachSanPhamTask extends AsyncTask<Void, Void, ArrayList<SanPham>> {
+    private void xuLyXemSpTheoDonGia() {
+
+        DsSanPhamTheoDonGiaTask task = new DsSanPhamTheoDonGiaTask();
+        task.execute(edtDonGiaMin.getText().toString(),edtDonGiaMax.getText().toString());
+
+    }
+
+    private void addControls() {
+        edtDonGiaMax=findViewById(R.id.edtDonGiaMax);
+        edtDonGiaMin=findViewById(R.id.edtDonGiaMin);
+        btnXemSpTheoDonGia=findViewById(R.id.btnXemSpTheoDonGia);
+        lvSanPham3=findViewById(R.id.lvSanPham3);
+
+        sanPhamArrayAdapter=new ArrayAdapter<>(TimSpTheoDonGiaActivity.this,android.R.layout.simple_list_item_1);
+        lvSanPham3.setAdapter(sanPhamArrayAdapter);
+
+
+
+
+    }
+    class DsSanPhamTheoDonGiaTask extends AsyncTask<String,Void,ArrayList<SanPham>>{
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            sanPhamArrayAdapter.clear();
         }
 
         @Override
         protected void onPostExecute(ArrayList<SanPham> sanPhams) {
             super.onPostExecute(sanPhams);
+            sanPhamArrayAdapter.clear();
             sanPhamArrayAdapter.clear();
             sanPhamArrayAdapter.addAll(sanPhams);
         }
@@ -64,13 +84,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
+
         }
 
         @Override
-        protected ArrayList<SanPham> doInBackground(Void... voids) {
+        protected ArrayList<SanPham> doInBackground(String... strings) {
             ArrayList<SanPham> dsSanPham = new ArrayList<>();
             try {
-                URL url = new URL("http://www.tripletstore.somee.com/api/sanpham");
+                URL url = new URL("http://tripletstore.somee.com/api/sanpham/?a=" + strings[0] + "&b=" + strings[1]);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -86,9 +107,15 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     int masp = jsonObject.getInt("masp");
                     String tensp = jsonObject.getString("tensp");
+                    int sl = jsonObject.getInt("soluong");
+                    int dongia = jsonObject.getInt("dongia");
+                    String baohanh=jsonObject.getString("baohanh");
                     SanPham sp = new SanPham();
-                    sp.setTenSp(tensp);
                     sp.setMaSp(masp);
+                    sp.setTenSp(tensp);
+                    sp.setSoLuongTon(sl);
+                    sp.setGiaBan(dongia);
+                    sp.setBaoHanh(baohanh);
                     dsSanPham.add(sp);
                 }
                 br.close();
@@ -97,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return dsSanPham;
+
         }
     }
+
 }
