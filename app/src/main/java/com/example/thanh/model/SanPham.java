@@ -15,7 +15,7 @@ public class SanPham {
     private String ngayCapNhat;
     private int slBanRa;
     private String tongDanhGia;
-
+private  String nnnn;
 
 
 
